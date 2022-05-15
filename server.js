@@ -1,10 +1,9 @@
-
-const PORT = process.env.PORT || 3001;
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
+const PORT = process.env.PORT || 3001;
 
-const express = require('express');
 const app = express();
+const express = require('express');
 
 const allNotes = require('./db/db.json');
 
@@ -28,6 +27,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
+// create note
 function createNewNote(body, notesArray) {
     const newNote = body;
     if (!Array.isArray(notesArray))
@@ -47,11 +47,13 @@ function createNewNote(body, notesArray) {
     return newNote;
 }
 
+//new note
 app.post('/api/notes', (req, res) => {
     const newNote = createNewNote(req.body, allNotes);
     res.json(newNote);
 });
 
+// clear note
 function deleteNote(id, notesArray) {
     for (let i = 0; i < notesArray.length; i++) {
         let note = notesArray[i];
@@ -68,6 +70,7 @@ function deleteNote(id, notesArray) {
     }
 }
 
+//remove note
 app.delete('/api/notes/:id', (req, res) => {
     deleteNote(req.params.id, allNotes);
     res.json(true);
